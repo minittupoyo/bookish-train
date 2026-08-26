@@ -6,10 +6,17 @@ import FormattedDate from "../../components/FormattedDate.astro";
 
 export async function getStaticPaths() {
     const posts = await getPosts();
-    return posts.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+    return posts.map((entry, i) => ({
+        params: { id: entry.id },
+        props: {
+            entry,
+            prev: i < posts.length - 1 ? posts[i + 1] : undefined,
+            next: i > 0 ? posts[i - 1] : undefined,
+        },
+    }));
 }
 
-const { entry } = Astro.props;
+const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
 ---
 
@@ -38,6 +45,41 @@ const { Content } = await render(entry);
                 <Content />
             </div>
         </article>
+
+        {
+            (prev || next) && (
+                <nav class="mt-16 grid gap-4 sm:grid-cols-2" aria-label="前後の記事">
+                    {prev ? (
+                        <a
+                            href={`/blog/${prev.id}/`}
+                            class="group flex cursor-pointer flex-col rounded-2xl border border-zinc-200/70 bg-white p-6 shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
+                        >
+                            <span class="text-xs font-medium text-zinc-500">
+                                <span aria-hidden="true">&larr;</span> 前の記事
+                            </span>
+                            <span class="mt-2 line-clamp-2 font-medium leading-snug text-zinc-900 transition-colors duration-200 group-hover:text-blue-600">
+                                {prev.data.title}
+                            </span>
+                        </a>
+                    ) : (
+                        <span />
+                    )}
+                    {next && (
+                        <a
+                            href={`/blog/${next.id}/`}
+                            class="group flex cursor-pointer flex-col rounded-2xl border border-zinc-200/70 bg-white p-6 text-right shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
+                        >
+                            <span class="text-xs font-medium text-zinc-500">
+                                次の記事 <span aria-hidden="true">&rarr;</span>
+                            </span>
+                            <span class="mt-2 line-clamp-2 font-medium leading-snug text-zinc-900 transition-colors duration-200 group-hover:text-blue-600">
+                                {next.data.title}
+                            </span>
+                        </a>
+                    )}
+                </nav>
+            )
+        }
 
         <footer class="mt-16 border-t border-zinc-200 pt-8">
             <a
