@@ -18,7 +18,7 @@ const posts = await getPosts();
 
         {
             posts.length === 0 ? (
-                <p class="mt-14 border-t border-zinc-200 py-16 text-center text-zinc-500">まだ記事がありません。</p>
+                <p class="mt-14 border-t border-zinc-200 pt-16 text-center text-zinc-500">まだ記事がありません。</p>
             ) : (
                 <ul class="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {posts.map((post) => (
@@ -27,7 +27,7 @@ const posts = await getPosts();
                                 href={`/blog/${post.id}/`}
                                 class="group flex h-full cursor-pointer flex-col rounded-2xl border border-zinc-200/70 bg-white p-6 shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
                             >
-                                <FormattedDate date={post.data.date} class="text-xs font-medium tracking-wide text-zinc-500 tabular-nums" />
+                                <FormattedDate date={post.data.date} format="numeric" class="text-xs font-medium tracking-wide text-zinc-500 tabular-nums" />
                                 <h2 class="mt-2 text-lg leading-snug font-semibold tracking-tight text-zinc-900 transition-colors duration-200 group-hover:text-blue-600">
                                     {post.data.title}
                                 </h2>
