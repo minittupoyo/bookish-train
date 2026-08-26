@@ -1,0 +1,107 @@
+diff --git a/dist/index-3c244051.js b/dist/index-3c244051.js
+index 233c8ca00c98b9ceec745b211cb5057911c2bf2d..12b982d135f0e2e41b6b0cf1f93b91eb829c40f4 100644
+--- a/dist/index-3c244051.js
++++ b/dist/index-3c244051.js
+@@ -19338,9 +19338,16 @@ const prosemirrorStyles = css`
+     caret-color: transparent;
+   }
+ 
+-  /* Style the placeholder element */
+-  .${classes.placeholder} {
++  /* Style the placeholder shown in an empty document.
++     Rendered with ::before on the empty block (see placeholderPlugin): no real
++     DOM node is inserted at the caret, so IME composition is not interrupted.
++     float/height:0 keep the text from affecting layout or hit-testing;
++     pointer-events:none keeps clicks/caret interactions untouched. */
++  .${classes.placeholder}[data-placeholder]::before {
+     color: ${tokenSchema.color.foreground.neutralTertiary};
++    content: attr(data-placeholder);
++    float: left;
++    height: 0;
+     pointer-events: none;
+   }
+ 
+@@ -21415,6 +21422,8 @@ function useEditorViewInEffect() {
+ function useEditorView(state, _onEditorStateChange) {
+   const mountRef = useRef(null);
+   const viewRef = useRef(null);
++  const composingRef = useRef(false);
++  const pendingExternalStateRef = useRef(null);
+   const config = useConfig();
+   const onEditorStateChange = useEventCallback(_onEditorStateChange);
+   useLayoutEffect(() => {
+@@ -21434,16 +21443,49 @@ function useEditorView(state, _onEditorStateChange) {
+         onEditorStateChange(newEditorState);
+       }
+     });
++    // While an IME composition is active, an EditorView.updateState() call can
++    // replace/rearrange the browser's temporary composition DOM and interrupt
++    // input. External state updates that arrive mid-composition are therefore
++    // queued and applied on compositionend instead of immediately.
++    const flushPendingExternalState = () => {
++      const pending = pendingExternalStateRef.current;
++      pendingExternalStateRef.current = null;
++      if (pending && viewRef.current && viewRef.current.state !== pending) {
++        viewRef.current.updateState(pending);
++      }
++    };
++    const onCompositionStart = () => {
++      composingRef.current = true;
++    };
++    const onCompositionEnd = () => {
++      composingRef.current = false;
++      flushPendingExternalState();
++    };
++    view.dom.addEventListener('compositionstart', onCompositionStart);
++    view.dom.addEventListener('compositionend', onCompositionEnd);
+     viewRef.current = view;
+     return () => {
++      view.dom.removeEventListener('compositionstart', onCompositionStart);
++      view.dom.removeEventListener('compositionend', onCompositionEnd);
++      composingRef.current = false;
++      pendingExternalStateRef.current = null;
+       view.destroy();
+       viewRef.current = null;
+     };
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [mountRef, onEditorStateChange, config]);
+   useLayoutEffect(() => {
+-    var _viewRef$current;
+-    (_viewRef$current = viewRef.current) === null || _viewRef$current === void 0 || _viewRef$current.updateState(state);
++    const view = viewRef.current;
++    if (!view) return;
++    // States produced by dispatchTransaction are already applied to the view
++    // synchronously; calling updateState() again from here runs a redundant
++    // DOM sync on every keystroke and can break active IME composition.
++    if (view.state === state) return;
++    if (composingRef.current) {
++      pendingExternalStateRef.current = state;
++      return;
++    }
++    view.updateState(state);
+   }, [state]);
+   return {
+     view: viewRef,
+@@ -26825,10 +26867,18 @@ function placeholderPlugin(text) {
+         var _doc$firstChild;
+         let doc = state.doc;
+         if (doc.childCount === 1 && (_doc$firstChild = doc.firstChild) !== null && _doc$firstChild !== void 0 && _doc$firstChild.isTextblock && doc.firstChild.content.size === 0) {
+-          let placeholder = document.createElement('span');
+-          placeholder.className = classes.placeholder;
+-          placeholder.textContent = text;
+-          return DecorationSet.create(doc, [Decoration.widget(1, placeholder)]);
++          // The placeholder must not insert real DOM nodes (Decoration.widget)
++          // into the editable content: when the first character is typed in an
++          // empty editor, removing the widget mid-composition interrupts
++          // Japanese IME input (the composition is force-committed/restarted).
++          // A node decoration only adds attributes to the existing empty block,
++          // and ::before renders the text, so the DOM child structure stays
++          // unchanged while composing.
++          const firstChild = doc.firstChild;
++          return DecorationSet.create(doc, [Decoration.node(0, firstChild.nodeSize, {
++            class: classes.placeholder,
++            'data-placeholder': text
++          })]);
+         }
+       }
+     }

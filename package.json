@@ -42,5 +42,8 @@
         "prettier": "^3.9.6",
         "prettier-plugin-astro": "^0.14.1",
         "prettier-plugin-tailwindcss": "^0.8.1"
+    },
+    "patchedDependencies": {
+        "@keystatic/core@0.6.9": "patches/@keystatic%2Fcore@0.6.9.patch"
     }
 }
