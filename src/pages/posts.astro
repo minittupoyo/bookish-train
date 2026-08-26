@@ -34,7 +34,11 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
                             {byYear.get(year).map((post) => (
                                 <li class="border-b border-zinc-200">
                                     <a href={`/blog/${post.id}/`} class="group flex cursor-pointer items-baseline gap-x-6 py-4">
-                                        <FormattedDate date={post.data.date} format="numeric" className="w-28 shrink-0 whitespace-nowrap text-xs text-zinc-500 tabular-nums" />
+                                        <FormattedDate
+                                            date={post.data.date}
+                                            format="numeric"
+                                            class="w-28 shrink-0 text-xs whitespace-nowrap text-zinc-500 tabular-nums"
+                                        />
                                         <span class="min-w-0">
                                             <span class="line-clamp-2 block font-medium text-zinc-900 transition-colors duration-200 group-hover:text-blue-600">
                                                 {post.data.title}
