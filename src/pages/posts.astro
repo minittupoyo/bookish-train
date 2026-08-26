@@ -1,11 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { getPosts } from "../lib/posts";
 import Layout from "../layouts/Layout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 
-const posts = (await getCollection("blog", ({ data }) => (import.meta.env.PROD ? !data.draft : true))).sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = await getPosts();
 
 const byYear = new Map<number, typeof posts>();
 for (const post of posts) {
