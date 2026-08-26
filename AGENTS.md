@@ -20,3 +20,12 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+## rule
+
+- Run `bun run check` and `bun run build` after changes.
+- Do not duplicate blog collection filtering/sorting logic.
+- Prefer Astro components over client-side React unless interactivity is required.
+- Do not add dependencies without explaining why.
+- Preserve accessibility attributes.
+- Keep components small; do not introduce abstractions until reused.
