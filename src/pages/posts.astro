@@ -10,8 +10,9 @@ const posts = (await getCollection("blog", ({ data }) => (import.meta.env.PROD ?
 const byYear = new Map<number, typeof posts>();
 for (const post of posts) {
     const year = post.data.date.getFullYear();
-    if (!byYear.has(year)) byYear.set(year, []);
-    byYear.get(year).push(post);
+    const list = byYear.get(year);
+    if (list) list.push(post);
+    else byYear.set(year, [post]);
 }
 const years = [...byYear.keys()].sort((a, b) => b - a);
 ---
@@ -31,7 +32,7 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
                     <section class="mt-12 first:mt-14">
                         <h2 class="text-sm font-semibold tracking-wide text-zinc-500 tabular-nums">{year} 年</h2>
                         <ol class="mt-4 border-t border-zinc-200">
-                            {byYear.get(year).map((post) => (
+                            {(byYear.get(year) ?? []).map((post) => (
                                 <li class="border-b border-zinc-200">
                                     <a href={`/blog/${post.id}/`} class="group flex cursor-pointer items-baseline gap-x-6 py-4">
                                         <FormattedDate
