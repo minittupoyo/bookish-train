@@ -30,16 +30,16 @@ export default defineConfig({
 
 ## 対応タイプ
 
-| マーカー | エイリアス | アイコン | 色 |
-| --- | --- | --- | --- |
-| `[!NOTE]` | `[!INFO]` | info-circle | 青 |
-| `[!TIP]` | `[!HINT]` `[!SUCCESS]` `[!CHECK]` | bulb | 緑 |
-| `[!IMPORTANT]` | — | flag | 紫 |
-| `[!WARNING]` | `[!ATTENTION]` | alert-triangle | 黄 |
-| `[!CAUTION]` | `[!DANGER]` `[!ERROR]` | alert-octagon | 赤 |
-| `[!QUESTION]` | `[!HELP]` | help-circle | 青 |
-| `[!EXAMPLE]` | — | code | 紫 |
-| `[!QUOTE]` | — | quote | グレー |
+| マーカー       | エイリアス                        | アイコン       | 色     |
+| -------------- | --------------------------------- | -------------- | ------ |
+| `[!NOTE]`      | `[!INFO]`                         | info-circle    | 青     |
+| `[!TIP]`       | `[!HINT]` `[!SUCCESS]` `[!CHECK]` | bulb           | 緑     |
+| `[!IMPORTANT]` | —                                 | flag           | 紫     |
+| `[!WARNING]`   | `[!ATTENTION]`                    | alert-triangle | 黄     |
+| `[!CAUTION]`   | `[!DANGER]` `[!ERROR]`            | alert-octagon  | 赤     |
+| `[!QUESTION]`  | `[!HELP]`                         | help-circle    | 青     |
+| `[!EXAMPLE]`   | —                                 | code           | 紫     |
+| `[!QUOTE]`     | —                                 | quote          | グレー |
 
 マーカー直後にタイトルを書けます（例: `> [!TIP] コツ`）。GitHub と同じく折りたたみ記号 `+` / `-` も解析時に受け付けます（折りたたみ動作は行いません）。
 
@@ -70,14 +70,28 @@ export default defineConfig({
         background-color: color-mix(in oklab, var(--callout-accent) 6%, white);
     }
 
-    .callout--note { --callout-accent: #0969da; }
-    .callout--tip { --callout-accent: #1a7f37; }
+    .callout--note {
+        --callout-accent: #0969da;
+    }
+    .callout--tip {
+        --callout-accent: #1a7f37;
+    }
     .callout--important,
-    .callout--example { --callout-accent: #8250df; }
-    .callout--warning { --callout-accent: #9a6700; }
-    .callout--caution { --callout-accent: #cf222e; }
-    .callout--question { --callout-accent: #0969da; }
-    .callout--quote { --callout-accent: #57606a; }
+    .callout--example {
+        --callout-accent: #8250df;
+    }
+    .callout--warning {
+        --callout-accent: #9a6700;
+    }
+    .callout--caution {
+        --callout-accent: #cf222e;
+    }
+    .callout--question {
+        --callout-accent: #0969da;
+    }
+    .callout--quote {
+        --callout-accent: #57606a;
+    }
 
     .callout__title {
         display: flex;
@@ -95,8 +109,12 @@ export default defineConfig({
         flex: none;
     }
 
-    .callout > :first-child { margin-top: 0; }
-    .callout > :last-child { margin-bottom: 0; }
+    .callout > :first-child {
+        margin-top: 0;
+    }
+    .callout > :last-child {
+        margin-bottom: 0;
+    }
 }
 ```
 

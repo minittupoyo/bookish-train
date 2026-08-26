@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+---
+
+<Layout title="About" description={`${SITE_TITLE}(${SITE_DESCRIPTION})と運営者みにっつについてのページです。`}>
+    <div class="mx-auto max-w-2xl px-6 py-14 sm:py-20">
+        <header>
+            <h1 class="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">About</h1>
+        </header>
+
+        <div
+            class="prose prose-zinc prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-loose prose-a:font-medium prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline mt-10 max-w-none"
+        >
+            <p>{SITE_TITLE}は、{SITE_DESCRIPTION}</p>
+
+            <h2 id="profile">みにっつ</h2>
+            <p>Ubuntu(on WSL2)、Bun、VSCode を使って開発しています。最近はほぼバイブコーディングで物づくりをするのが楽しい日々です。</p>
+
+            <h2 id="this-blog">このブログについて</h2>
+            <p>
+                Astro v7 と Sätteri(Tailwind CSS v4)で構築され、Cloudflare Workers でホスティングされています。URL
+                を貼るだけでリンクカードになり、コードブロックは Expressive Code によるシンタックスハイライトで表示されます。
+            </p>
+        </div>
+    </div>
+</Layout>

@@ -137,8 +137,7 @@ export function createSatteriCallout(options = {}) {
                 // marker into a `break` node; drop it so no <br> leads the body.
                 while (
                     restChildren.length > 0 &&
-                    (restChildren[0].type === "break" ||
-                        (restChildren[0].type === "text" && restChildren[0].value.trim() === ""))
+                    (restChildren[0].type === "break" || (restChildren[0].type === "text" && restChildren[0].value.trim() === ""))
                 ) {
                     restChildren.shift();
                 }
