@@ -1,0 +1,16 @@
+{
+    // Cloudflare Workers (static assets only)
+    // Deploy: bunx wrangler deploy
+    // Preview locally: bunx wrangler dev
+    "$schema": "https://unpkg.com/wrangler/config-schema.json",
+    "name": "bookish-train",
+    "compatibility_date": "2026-08-26",
+    "assets": {
+        // Astro build output
+        "directory": "./dist/",
+        // Serve 404.html for unmatched routes (create src/pages/404.astro to customize)
+        "not_found_handling": "404-page",
+        // /blog/foo -> /blog/foo/ style routing, matches Astro's directory URLs
+        "html_handling": "auto-trailing-slash"
+    }
+}
