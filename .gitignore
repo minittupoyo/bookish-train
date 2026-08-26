@@ -22,3 +22,11 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# opencode (keep shared skills only)
+.opencode/*
+!.opencode/skills/
+
+# python
+__pycache__/
+*.pyc

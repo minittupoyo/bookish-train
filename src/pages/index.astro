@@ -1,11 +1,56 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const posts = (await getCollection("blog", ({ data }) => (import.meta.env.PROD ? !data.draft : true))).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
 ---
 
 <Layout>
-	<Welcome />
+    <div class="mx-auto max-w-5xl px-6 py-14 sm:py-20">
+        <section>
+            <h1 class="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
+                {SITE_TITLE}
+            </h1>
+            <p class="mt-4 leading-relaxed text-zinc-600">{SITE_DESCRIPTION}</p>
+        </section>
+
+        {
+            posts.length === 0 ? (
+                <p class="mt-14 border-t border-zinc-200 py-16 text-center text-zinc-500">まだ記事がありません。</p>
+            ) : (
+                <ul class="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {posts.map((post) => (
+                        <li class="h-full">
+                            <a
+                                href={`/blog/${post.id}/`}
+                                class="group flex h-full cursor-pointer flex-col rounded-2xl border border-zinc-200/70 bg-white p-6 shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
+                            >
+                                <FormattedDate
+                                    date={post.data.date}
+                                    className="text-xs font-medium tracking-wide text-zinc-500 tabular-nums"
+                                />
+                                <h2 class="mt-2 text-lg leading-snug font-semibold tracking-tight text-zinc-900 transition-colors duration-200 group-hover:text-blue-600">
+                                    {post.data.title}
+                                </h2>
+                                <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-600">{post.data.description}</p>
+                                {post.data.tags.length > 0 && (
+                                    <ul class="mt-auto flex flex-wrap gap-2 pt-4" aria-label="タグ">
+                                        {post.data.tags.map((tag) => (
+                                            <li class="rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs text-zinc-600">
+                                                {tag}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+    </div>
 </Layout>

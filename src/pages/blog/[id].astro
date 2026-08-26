@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog", ({ data }) => (import.meta.env.PROD ? !data.draft : true));
+    return posts.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title} description={entry.data.description}>
+    <div class="mx-auto max-w-2xl px-6 py-14 sm:py-20">
+        <article>
+            <header>
+                <FormattedDate date={entry.data.date} class="text-sm font-medium text-zinc-500 tabular-nums" />
+                <h1 class="mt-3 text-3xl leading-snug font-bold tracking-tight text-zinc-950 sm:text-4xl">
+                    {entry.data.title}
+                </h1>
+                {
+                    entry.data.tags.length > 0 && (
+                        <ul class="mt-4 flex flex-wrap gap-2" aria-label="タグ">
+                            {entry.data.tags.map((tag) => (
+                                <li class="rounded-full border border-zinc-200 bg-white px-2.5 py-0.5 text-xs text-zinc-600">{tag}</li>
+                            ))}
+                        </ul>
+                    )
+                }
+            </header>
+
+            <div
+                class="prose prose-zinc prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-loose prose-a:font-medium prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline mt-10 max-w-none"
+            >
+                <Content />
+            </div>
+        </article>
+
+        <footer class="mt-16 border-t border-zinc-200 pt-8">
+            <a
+                href="/"
+                class="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-zinc-600 transition-colors duration-200 hover:text-blue-600"
+            >
+                <span aria-hidden="true">&larr;</span>
+                記事一覧に戻る
+            </a>
+        </footer>
+    </div>
+</Layout>

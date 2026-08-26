@@ -1,0 +1,33 @@
+{
+    "name": "@minittupoyo/satteri-callout",
+    "version": "1.0.0",
+    "description": "Satteri plugin that renders GitHub-style [!NOTE] blockquote alerts as styled callouts with base64-embedded Tabler icons",
+    "type": "module",
+    "main": "./src/index.js",
+    "types": "./index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "default": "./src/index.js"
+        }
+    },
+    "files": [
+        "src",
+        "index.d.ts"
+    ],
+    "keywords": [
+        "satteri",
+        "markdown",
+        "mdast",
+        "callout",
+        "alert",
+        "tabler"
+    ],
+    "license": "MIT",
+    "engines": {
+        "node": ">=18"
+    },
+    "peerDependencies": {
+        "satteri": "^0.10.0"
+    }
+}
