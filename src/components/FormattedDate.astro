@@ -2,15 +2,21 @@
 interface Props {
     date: Date;
     class?: string;
+    format?: "long" | "numeric";
 }
 
-const { date, class: className } = Astro.props;
+const { date, class: className, format = "long" } = Astro.props;
 
-const formatted = new Intl.DateTimeFormat("ja-JP", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-}).format(date);
+const pad = (value: number) => String(value).padStart(2, "0");
+
+const formatted =
+    format === "numeric"
+        ? `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+        : new Intl.DateTimeFormat("ja-JP", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+          }).format(date);
 ---
 
 <time datetime={date.toISOString()} class={className}>{formatted}</time>
