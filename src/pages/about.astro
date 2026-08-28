@@ -1,27 +1,126 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const tools = ["Astro", "Tailwind CSS", "Bun", "Cloudflare Workers", "Ubuntu / WSL2", "VS Code"];
+
+const links = [
+    { label: "GitHub", href: "https://github.com/minittupoyo", description: "コードや制作物を見る" },
+    { label: "記事一覧", href: "/posts/", description: "これまでに書いた記事を読む" },
+];
 ---
 
 <Layout title="About" description={`${SITE_TITLE}(${SITE_DESCRIPTION})と運営者みにっつについてのページです。`}>
-    <div class="mx-auto max-w-2xl px-6 py-14 sm:py-20">
-        <header>
-            <h1 class="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">About</h1>
+    <div class="mx-auto max-w-5xl px-6 py-14 sm:py-20">
+        <header class="grid gap-10 border-b border-zinc-200 pb-12 sm:pb-16 md:grid-cols-[minmax(0,1fr)_18rem] md:items-end">
+            <div>
+                <p class="text-sm font-semibold tracking-widest text-blue-600 uppercase">About</p>
+                <h1 class="mt-4 max-w-2xl text-3xl leading-tight font-bold tracking-tight text-zinc-950 sm:text-5xl">
+                    好きなものを、<br class="hidden sm:block" />自分の言葉で記録する。
+                </h1>
+                <p class="mt-6 max-w-2xl text-base leading-8 text-zinc-600">
+                    {SITE_TITLE}は、{SITE_DESCRIPTION}
+                    技術の試行錯誤や、使ってよかったものを中心に書いています。
+                </p>
+            </div>
+
+            <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="grid size-12 shrink-0 place-items-center rounded-full bg-blue-50 text-lg font-bold text-blue-600"
+                        aria-hidden="true"
+                    >
+                        み
+                    </div>
+                    <div>
+                        <p class="font-semibold text-zinc-950">みにっつ</p>
+                        <p class="mt-0.5 text-sm text-zinc-500">個人ブログの運営者</p>
+                    </div>
+                </div>
+                <p class="mt-5 text-sm leading-7 text-zinc-600">
+                    作ることと試すことが好きです。最近はAIと一緒に、アイデアをすばやく形にしています。
+                </p>
+            </div>
         </header>
 
-        <div
-            class="prose prose-zinc prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-loose prose-a:font-medium prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline mt-10 max-w-none"
-        >
-            <p>{SITE_TITLE}は、{SITE_DESCRIPTION}</p>
-
-            <h2 id="profile">みにっつ</h2>
-            <p>Ubuntu(on WSL2)、Bun、VSCode を使って開発しています。最近はほぼバイブコーディングで物づくりをするのが楽しい日々です。</p>
-
-            <h2 id="this-blog">このブログについて</h2>
-            <p>
-                Astro v7 と Sätteri(Tailwind CSS v4)で構築され、Cloudflare Workers でホスティングされています。URL
-                を貼るだけでリンクカードになり、コードブロックは Expressive Code によるシンタックスハイライトで表示されます。
-            </p>
+        <div class="grid gap-12 py-12 sm:py-16 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-16">
+            <h2 class="text-sm font-semibold tracking-wide text-zinc-500">プロフィール</h2>
+            <div>
+                <h3 class="text-2xl font-bold tracking-tight text-zinc-950">こんにちは、みにっつです。</h3>
+                <div class="mt-5 space-y-4 text-base leading-8 text-zinc-600">
+                    <p>
+                        Ubuntu（WSL2）、Bun、VS
+                        Codeを使って開発しています。Web制作やセルフホストなど、気になった技術を実際に試すのが好きです。
+                    </p>
+                    <p>
+                        最近はほぼバイブコーディングで、思いついたものを作る日々を楽しんでいます。このブログには、その過程で得た知見や忘れたくない設定を残しています。
+                    </p>
+                </div>
+            </div>
         </div>
+
+        <div class="grid gap-12 border-t border-zinc-200 py-12 sm:py-16 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-16">
+            <h2 class="text-sm font-semibold tracking-wide text-zinc-500">このブログ</h2>
+            <div>
+                <h3 class="text-2xl font-bold tracking-tight text-zinc-950">軽く、読みやすく、書き続けられる場所。</h3>
+                <p class="mt-5 text-base leading-8 text-zinc-600">
+                    Astro v7とSätteri（Tailwind CSS v4）で構築し、Cloudflare
+                    Workersでホスティングしています。URLを貼るだけで表示できるリンクカードや、Expressive
+                    Codeによるコード表示など、書くことに集中できる仕組みも整えています。
+                </p>
+
+                <ul class="mt-8 flex flex-wrap gap-2" aria-label="使用技術">
+                    {
+                        tools.map((tool) => (
+                            <li class="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 shadow-xs">{tool}</li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <section class="border-t border-zinc-200 pt-12 sm:pt-16" aria-labelledby="links-heading">
+            <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+                <div>
+                    <p class="text-sm font-semibold tracking-wide text-zinc-500">Links</p>
+                    <h2 id="links-heading" class="mt-2 text-2xl font-bold tracking-tight text-zinc-950">もう少し見る</h2>
+                </div>
+                <p class="text-sm text-zinc-500">制作物と、このブログの記事へ。</p>
+            </div>
+
+            <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+                {
+                    links.map((link) => (
+                        <li>
+                            <a
+                                href={link.href}
+                                class="group flex items-center justify-between gap-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
+                            >
+                                <span>
+                                    <span class="font-semibold text-zinc-950 transition-colors duration-200 group-hover:text-blue-600">
+                                        {link.label}
+                                    </span>
+                                    <span class="mt-1 block text-sm text-zinc-500">{link.description}</span>
+                                </span>
+                                <svg
+                                    class="size-5 shrink-0 text-zinc-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-blue-600"
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M4 10h12m-5-5 5 5-5 5"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </section>
     </div>
 </Layout>
