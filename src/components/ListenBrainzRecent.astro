@@ -24,6 +24,17 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         </a>
     </div>
 
+    <div class="mt-5 hidden rounded-2xl border border-blue-200 bg-blue-50/60 p-4" data-listenbrainz-now-playing aria-live="polite">
+        <div class="mb-3 flex items-center gap-2 text-xs font-medium text-blue-700">
+            <span class="relative flex size-2" aria-hidden="true">
+                <span class="absolute inline-flex size-full animate-ping rounded-full bg-blue-500 opacity-60"></span>
+                <span class="relative inline-flex size-2 rounded-full bg-blue-600"></span>
+            </span>
+            Now Playing
+        </div>
+        <div class="flex items-center gap-4" data-listenbrainz-now-playing-track></div>
+    </div>
+
     <p class="mt-5 text-sm text-zinc-500" data-listenbrainz-status aria-live="polite">ListenBrainz から取得中...</p>
     <ol class="mt-5 hidden divide-y divide-zinc-100 overflow-hidden rounded-2xl border border-zinc-200/70 bg-white" data-listenbrainz-list aria-label="最近聴いた曲"></ol>
 </section>
@@ -49,6 +60,7 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
     interface ListenBrainzResponse {
         payload?: {
             listens?: ListenBrainzListen[];
+            playing_now?: boolean;
         };
     }
 
@@ -70,13 +82,9 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         return `https://coverartarchive.org/release/${encodeURIComponent(mapping.caa_release_mbid)}/${encodeURIComponent(String(mapping.caa_id))}-250.jpg`;
     };
 
-    const renderListen = (listen: ListenBrainzListen) => {
-        const metadata = listen.track_metadata ?? {};
-        const item = document.createElement("li");
-        item.className = "flex items-center gap-4 px-4 py-4 sm:px-5";
-
+    const createCover = (metadata: ListenBrainzTrackMetadata, sizeClass: string) => {
         const cover = document.createElement("div");
-        cover.className = "flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-zinc-100 text-zinc-400";
+        cover.className = `flex ${sizeClass} shrink-0 items-center justify-center overflow-hidden rounded-lg bg-zinc-100 text-zinc-400`;
 
         const coverUrl = getCoverArtUrl(metadata);
         if (coverUrl) {
@@ -90,25 +98,71 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
             cover.append(image);
         }
 
+        return cover;
+    };
+
+    const createTrackText = (metadata: ListenBrainzTrackMetadata, titleClass = "truncate text-sm font-medium text-zinc-900") => {
         const track = document.createElement("div");
         track.className = "min-w-0 flex-1";
 
         const title = document.createElement("p");
-        title.className = "truncate text-sm font-medium text-zinc-900";
+        title.className = titleClass;
         title.textContent = metadata.track_name || "曲名不明";
 
         const details = document.createElement("p");
         details.className = "mt-1 truncate text-xs text-zinc-500";
         details.textContent = [metadata.artist_name, metadata.release_name].filter(Boolean).join(" · ") || "アーティスト不明";
 
+        track.append(title, details);
+        return track;
+    };
+
+    const renderListen = (listen: ListenBrainzListen) => {
+        const metadata = listen.track_metadata ?? {};
+        const item = document.createElement("li");
+        item.className = "flex items-center gap-4 px-4 py-4 sm:px-5";
+
         const listenedAt = document.createElement("time");
         listenedAt.className = "shrink-0 text-xs text-zinc-400 tabular-nums";
         listenedAt.textContent = formatListenedAt(listen.listened_at);
         if (listen.listened_at) listenedAt.dateTime = new Date(listen.listened_at * 1000).toISOString();
 
-        track.append(title, details);
-        item.append(cover, track, listenedAt);
+        item.append(createCover(metadata, "size-14"), createTrackText(metadata), listenedAt);
         return item;
+    };
+
+    const loadNowPlaying = async (section: HTMLElement) => {
+        const username = section.dataset.username;
+        const nowPlaying = section.querySelector<HTMLElement>("[data-listenbrainz-now-playing]");
+        const trackContainer = section.querySelector<HTMLElement>("[data-listenbrainz-now-playing-track]");
+        if (!username || !nowPlaying || !trackContainer) return;
+
+        try {
+            const response = await fetch(`https://api.listenbrainz.org/1/user/${encodeURIComponent(username)}/playing-now`, {
+                headers: { Accept: "application/json" },
+            });
+
+            if (!response.ok) throw new Error(`ListenBrainz playing-now API returned ${response.status}`);
+
+            const data = (await response.json()) as ListenBrainzResponse;
+            const listen = data.payload?.playing_now ? data.payload.listens?.[0] : undefined;
+
+            if (!listen) {
+                nowPlaying.classList.add("hidden");
+                trackContainer.replaceChildren();
+                return;
+            }
+
+            const metadata = listen.track_metadata ?? {};
+            trackContainer.replaceChildren(
+                createCover(metadata, "size-16 sm:size-20"),
+                createTrackText(metadata, "truncate text-base font-semibold text-zinc-950 sm:text-lg"),
+            );
+            nowPlaying.classList.remove("hidden");
+        } catch (error) {
+            console.error("Failed to load ListenBrainz now playing", error);
+            nowPlaying.classList.add("hidden");
+        }
     };
 
     const loadRecentListens = async (section: HTMLElement) => {
@@ -144,6 +198,10 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
     };
 
     document.querySelectorAll<HTMLElement>("[data-listenbrainz]").forEach((section) => {
-        void loadRecentListens(section);
+        void Promise.all([loadNowPlaying(section), loadRecentListens(section)]);
+
+        window.setInterval(() => {
+            if (document.visibilityState === "visible") void loadNowPlaying(section);
+        }, 30_000);
     });
 </script>
