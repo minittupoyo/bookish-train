@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-const tools = ["Astro", "Tailwind CSS", "Bun", "Cloudflare Workers", "Ubuntu / WSL2", "VS Code"];
+const tools = ["Astro", "Tailwind CSS", "Bun", "Cloudflare Workers", "Arch Linux", "Windows 11", "VS Code / fresh"];
 
 const links = [
     { label: "GitHub", href: "https://github.com/minittupoyo", description: "コードや制作物を見る" },
@@ -20,7 +20,7 @@ const links = [
                 </h1>
                 <p class="mt-6 max-w-2xl text-base leading-8 text-zinc-600">
                     {SITE_TITLE}は、{SITE_DESCRIPTION}
-                    技術の試行錯誤や、使ってよかったものを中心に書いています。
+                    パソコンやWeb、AIの話からゲームや買ったもの、日々考えたことまで、気になったものを雑多に書いています。
                 </p>
             </div>
 
@@ -38,7 +38,7 @@ const links = [
                     </div>
                 </div>
                 <p class="mt-5 text-sm leading-7 text-zinc-600">
-                    作ることと試すことが好きです。最近はAIと一緒に、アイデアをすばやく形にしています。
+                    パソコンをいじったり、美少女ゲームをやったり、音楽を聴いたりしています。気になったものは、とりあえず触ってみるタイプです。
                 </p>
             </div>
         </header>
@@ -49,11 +49,13 @@ const links = [
                 <h3 class="text-2xl font-bold tracking-tight text-zinc-950">こんにちは、みにっつです。</h3>
                 <div class="mt-5 space-y-4 text-base leading-8 text-zinc-600">
                     <p>
-                        Ubuntu（WSL2）、Bun、VS
-                        Codeを使って開発しています。Web制作やセルフホストなど、気になった技術を実際に試すのが好きです。
+                        Linuxを入れていじったり、Webサイトを作ったり、自作PCのパーツで悩んだり、AIにコードを書かせたりしています。WindowsとLinuxを行ったり来たりしながら、気になった技術を実際に試すのが好きです。
                     </p>
                     <p>
-                        最近はほぼバイブコーディングで、思いついたものを作る日々を楽しんでいます。このブログには、その過程で得た知見や忘れたくない設定を残しています。
+                        プログラミングは勉強中。全部を自分で書くというより、ChatGPTやCodexなどのAIにもかなり頼りながら作っています。最近はAstroやBunを使ったWeb制作、Linux環境、自宅サーバーあたりを触ることが多めです。
+                    </p>
+                    <p>
+                        このブログは「詳しい人が教える場所」というより、自分が試したこと、ハマったこと、あとで忘れそうな設定や、その時々で考えたことを残しておく場所です。
                     </p>
                 </div>
             </div>
@@ -62,14 +64,17 @@ const links = [
         <div class="grid gap-12 border-t border-zinc-200 py-12 sm:py-16 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-16">
             <h2 class="text-sm font-semibold tracking-wide text-zinc-500">このブログ</h2>
             <div>
-                <h3 class="text-2xl font-bold tracking-tight text-zinc-950">軽く、読みやすく、書き続けられる場所。</h3>
-                <p class="mt-5 text-base leading-8 text-zinc-600">
-                    Astro v7とSätteri（Tailwind CSS v4）で構築し、Cloudflare
-                    Workersでホスティングしています。URLを貼るだけで表示できるリンクカードや、Expressive
-                    Codeによるコード表示など、書くことに集中できる仕組みも整えています。
-                </p>
+                <h3 class="text-2xl font-bold tracking-tight text-zinc-950">技術ブログというより、個人ブログ。</h3>
+                <div class="mt-5 space-y-4 text-base leading-8 text-zinc-600">
+                    <p>
+                        LinuxやWeb、AI、自作PCなど技術っぽい記事が多いですが、それだけに絞るつもりはありません。ゲーム、買ったもの、音楽、その時に考えていたことなども書きます。
+                    </p>
+                    <p>
+                        ブログ自体はAstro v7とSätteri（Tailwind CSS v4）で構築し、Cloudflare Workersでホスティングしています。ブログそのものも実験場みたいなもので、欲しくなった機能をその都度足しています。
+                    </p>
+                </div>
 
-                <ul class="mt-8 flex flex-wrap gap-2" aria-label="使用技術">
+                <ul class="mt-8 flex flex-wrap gap-2" aria-label="使用技術・環境">
                     {
                         tools.map((tool) => (
                             <li class="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 shadow-xs">{tool}</li>
