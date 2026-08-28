@@ -29,10 +29,16 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
 </section>
 
 <script>
+    interface ListenBrainzMbidMapping {
+        caa_id?: number;
+        caa_release_mbid?: string;
+    }
+
     interface ListenBrainzTrackMetadata {
         artist_name?: string;
         track_name?: string;
         release_name?: string;
+        mbid_mapping?: ListenBrainzMbidMapping;
     }
 
     interface ListenBrainzListen {
@@ -57,13 +63,35 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         }).format(new Date(timestamp * 1000));
     };
 
+    const getCoverArtUrl = (metadata: ListenBrainzTrackMetadata) => {
+        const mapping = metadata.mbid_mapping;
+        if (!mapping?.caa_id || !mapping.caa_release_mbid) return null;
+
+        return `https://coverartarchive.org/release/${encodeURIComponent(mapping.caa_release_mbid)}/${encodeURIComponent(String(mapping.caa_id))}-250.jpg`;
+    };
+
     const renderListen = (listen: ListenBrainzListen) => {
         const metadata = listen.track_metadata ?? {};
         const item = document.createElement("li");
-        item.className = "flex items-start justify-between gap-4 px-5 py-4";
+        item.className = "flex items-center gap-4 px-4 py-4 sm:px-5";
+
+        const cover = document.createElement("div");
+        cover.className = "flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-zinc-100 text-zinc-400";
+
+        const coverUrl = getCoverArtUrl(metadata);
+        if (coverUrl) {
+            const image = document.createElement("img");
+            image.src = coverUrl;
+            image.alt = metadata.release_name ? `${metadata.release_name} のジャケット` : "アルバムジャケット";
+            image.className = "size-full object-cover";
+            image.loading = "lazy";
+            image.decoding = "async";
+            image.addEventListener("error", () => image.remove(), { once: true });
+            cover.append(image);
+        }
 
         const track = document.createElement("div");
-        track.className = "min-w-0";
+        track.className = "min-w-0 flex-1";
 
         const title = document.createElement("p");
         title.className = "truncate text-sm font-medium text-zinc-900";
@@ -79,7 +107,7 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         if (listen.listened_at) listenedAt.dateTime = new Date(listen.listened_at * 1000).toISOString();
 
         track.append(title, details);
-        item.append(track, listenedAt);
+        item.append(cover, track, listenedAt);
         return item;
     };
 
