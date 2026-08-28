@@ -45,11 +45,17 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         caa_release_mbid?: string;
     }
 
+    interface ListenBrainzAdditionalInfo {
+        release_mbid?: string;
+        release_group_mbid?: string;
+    }
+
     interface ListenBrainzTrackMetadata {
         artist_name?: string;
         track_name?: string;
         release_name?: string;
         mbid_mapping?: ListenBrainzMbidMapping;
+        additional_info?: ListenBrainzAdditionalInfo;
     }
 
     interface ListenBrainzListen {
@@ -75,26 +81,52 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         }).format(new Date(timestamp * 1000));
     };
 
-    const getCoverArtUrl = (metadata: ListenBrainzTrackMetadata) => {
+    const getCoverArtUrls = (metadata: ListenBrainzTrackMetadata) => {
+        const urls: string[] = [];
         const mapping = metadata.mbid_mapping;
-        if (!mapping?.caa_id || !mapping.caa_release_mbid) return null;
+        const additionalInfo = metadata.additional_info;
 
-        return `https://coverartarchive.org/release/${encodeURIComponent(mapping.caa_release_mbid)}/${encodeURIComponent(String(mapping.caa_id))}-250.jpg`;
+        if (mapping?.caa_id && mapping.caa_release_mbid) {
+            urls.push(
+                `https://coverartarchive.org/release/${encodeURIComponent(mapping.caa_release_mbid)}/${encodeURIComponent(String(mapping.caa_id))}-250.jpg`,
+            );
+        }
+
+        if (additionalInfo?.release_mbid) {
+            urls.push(`https://coverartarchive.org/release/${encodeURIComponent(additionalInfo.release_mbid)}/front-250.jpg`);
+        }
+
+        if (additionalInfo?.release_group_mbid) {
+            urls.push(`https://coverartarchive.org/release-group/${encodeURIComponent(additionalInfo.release_group_mbid)}/front-250.jpg`);
+        }
+
+        return [...new Set(urls)];
     };
 
     const createCover = (metadata: ListenBrainzTrackMetadata, sizeClass: string) => {
         const cover = document.createElement("div");
         cover.className = `flex ${sizeClass} shrink-0 items-center justify-center overflow-hidden rounded-lg bg-zinc-100 text-zinc-400`;
 
-        const coverUrl = getCoverArtUrl(metadata);
-        if (coverUrl) {
+        const coverUrls = getCoverArtUrls(metadata);
+        if (coverUrls.length > 0) {
             const image = document.createElement("img");
-            image.src = coverUrl;
             image.alt = metadata.release_name ? `${metadata.release_name} のジャケット` : "アルバムジャケット";
             image.className = "size-full object-cover";
             image.loading = "lazy";
             image.decoding = "async";
-            image.addEventListener("error", () => image.remove(), { once: true });
+
+            let coverIndex = 0;
+            image.src = coverUrls[coverIndex];
+            image.addEventListener("error", () => {
+                coverIndex += 1;
+                const fallbackUrl = coverUrls[coverIndex];
+                if (fallbackUrl) {
+                    image.src = fallbackUrl;
+                } else {
+                    image.remove();
+                }
+            });
+
             cover.append(image);
         }
 
