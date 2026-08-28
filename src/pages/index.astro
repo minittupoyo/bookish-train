@@ -2,6 +2,7 @@
 import { getPosts } from "../lib/posts";
 import Layout from "../layouts/Layout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import ListenBrainzRecent from "../components/ListenBrainzRecent.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 const posts = await getPosts();
@@ -15,6 +16,8 @@ const posts = await getPosts();
             </h1>
             <p class="mt-4 leading-relaxed text-zinc-600">{SITE_DESCRIPTION}</p>
         </section>
+
+        <ListenBrainzRecent username="minittupoyo" count={5} />
 
         {
             posts.length === 0 ? (
