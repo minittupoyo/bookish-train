@@ -2,10 +2,13 @@
 @plugin "@tailwindcss/typography";
 @import "@fontsource-variable/sora";
 @import "@fontsource-variable/noto-sans-jp";
+@import "@fontsource-variable/fira-code";
 
 @theme {
     --default-font-family: "Sora Variable", "Noto Sans JP Variable", sans-serif;
     --font-sans: "Sora Variable", "Noto Sans JP Variable", sans-serif;
+    --default-mono-font-family: "Fira Code Variable", monospace;
+    --font-mono: "Fira Code Variable", monospace;
 }
 
 @layer base {

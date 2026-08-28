@@ -8,6 +8,7 @@
         "@astrojs/check": "^0.9.10",
         "@astrojs/markdoc": "^2.0.8",
         "@astrojs/react": "^6.0.4",
+        "@fontsource-variable/fira-code": "^5.3.0",
         "@fontsource-variable/noto-sans-jp": "^5.3.0",
         "@fontsource-variable/sora": "^5.3.0",
         "@keystatic/astro": "^6.0.0",
@@ -261,6 +262,8 @@
     "@floating-ui/react-dom": ["@floating-ui/react-dom@2.1.9", "", { "dependencies": { "@floating-ui/dom": "^1.8.0" }, "peerDependencies": { "react": ">=16.8.0", "react-dom": ">=16.8.0" } }, "sha512-JDjEFGCpImxDCA7JJKviA0M9+RtmJdj0m/NVU5IMgBK+AmZouAQQ7/+2GLH0GXXY0YMw9oXPB8hKdbPYg5QLYg=="],
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.12", "", {}, "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="],
+
+    "@fontsource-variable/fira-code": ["@fontsource-variable/fira-code@5.3.0", "", {}, "sha512-ZhvHeknlicraKVSJBa1NrJnXDVByUkC407zwgELYfmnx3p9g8vwIPfQCxx8YD3K7dAeCdLuHJOHlpMfRsIcApQ=="],
 
     "@fontsource-variable/noto-sans-jp": ["@fontsource-variable/noto-sans-jp@5.3.0", "", {}, "sha512-XVL9GfGBRjj523v9w3Bctu4mNq7E5rUa+AMZm8DK1EM3LAGlKC3DZMvuqkLn4DB4TwwoAjcsJUCiRpUTDzzOkw=="],
 
