@@ -1,5 +1,9 @@
+interface AssetBinding {
+    fetch(request: Request): Promise<Response>;
+}
+
 interface Env {
-    ASSETS: Fetcher;
+    ASSETS: AssetBinding;
     LISTENBRAINZ_TOKEN?: string;
 }
 
