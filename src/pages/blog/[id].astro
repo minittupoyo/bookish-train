@@ -24,15 +24,15 @@ const { Content } = await render(entry);
     <div class="mx-auto max-w-2xl px-6 py-14 sm:py-20">
         <article>
             <header>
-                <FormattedDate date={entry.data.date} format="numeric" class="text-sm font-medium text-zinc-500 tabular-nums" />
-                <h1 class="mt-3 text-3xl leading-snug font-bold tracking-tight text-zinc-950 sm:text-4xl">
+                <FormattedDate date={entry.data.date} format="numeric" class="text-sm font-semibold text-[#817477] tabular-nums" />
+                <h1 class="md3-display mt-3 text-3xl leading-snug sm:text-5xl">
                     {entry.data.title}
                 </h1>
                 {
                     entry.data.tags.length > 0 && (
                         <ul class="mt-4 flex flex-wrap gap-2" aria-label="タグ">
                             {entry.data.tags.map((tag) => (
-                                <li class="rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs text-zinc-600">{tag}</li>
+                                <li class="md3-pill px-2.5 py-0.5 text-xs">{tag}</li>
                             ))}
                         </ul>
                     )
@@ -52,7 +52,7 @@ const { Content } = await render(entry);
                     {prev ? (
                         <a
                             href={`/blog/${prev.id}/`}
-                            class="group flex cursor-pointer flex-col rounded-2xl border border-zinc-200/70 bg-white p-6 shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
+                            class="md3-card group flex cursor-pointer flex-col p-6"
                         >
                             <span class="text-xs font-medium text-zinc-500">
                                 <span aria-hidden="true">&larr;</span> 前の記事
@@ -67,7 +67,7 @@ const { Content } = await render(entry);
                     {next && (
                         <a
                             href={`/blog/${next.id}/`}
-                            class="group flex cursor-pointer flex-col rounded-2xl border border-zinc-200/70 bg-white p-6 text-right shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
+                            class="md3-card group flex cursor-pointer flex-col p-6 text-right"
                         >
                             <span class="text-xs font-medium text-zinc-500">
                                 次の記事 <span aria-hidden="true">&rarr;</span>

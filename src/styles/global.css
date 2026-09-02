@@ -9,16 +9,28 @@
     --font-sans: "Sora Variable", "Noto Sans JP Variable", sans-serif;
     --default-mono-font-family: "Fira Code Variable", monospace;
     --font-mono: "Fira Code Variable", monospace;
+
+    /* Material 3 Expressive tonal palette */
+    --color-md3-surface: #fff8f7;
+    --color-md3-surface-container: #f9e9e8;
+    --color-md3-primary: #6750a4;
+    --color-md3-primary-container: #eaddff;
+    --color-md3-secondary: #006874;
+    --color-md3-secondary-container: #97f0ff;
+    --color-md3-tertiary: #8c4a60;
+    --color-md3-tertiary-container: #ffd9e2;
+    --color-md3-on-surface: #211a1d;
+    --color-md3-outline: #817477;
 }
 
 @layer base {
     :focus-visible {
-        outline: 2px solid var(--color-blue-600);
+        outline: 3px solid var(--color-md3-secondary);
         outline-offset: 2px;
     }
 
     ::selection {
-        background-color: var(--color-blue-600);
+        background-color: var(--color-md3-primary);
         color: white;
     }
 
@@ -30,6 +42,67 @@
             transition-duration: 0.01ms !important;
             scroll-behavior: auto !important;
         }
+    }
+}
+
+@layer components {
+    .md3-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 2.25rem 2.25rem 1rem 2.25rem;
+        background: linear-gradient(135deg, #eaddff 0%, #f9e9e8 58%, #ffd9e2 100%);
+        box-shadow: 0 8px 24px rgb(103 80 164 / 0.12);
+    }
+
+    .md3-hero::after {
+        position: absolute;
+        right: -4rem;
+        bottom: -5rem;
+        width: 13rem;
+        height: 13rem;
+        border-radius: 50%;
+        background: #97f0ff;
+        opacity: 0.7;
+        content: "";
+    }
+
+    .md3-card {
+        border: 1px solid rgb(129 116 119 / 0.2);
+        border-radius: 1.5rem 1.5rem 0.5rem 1.5rem;
+        background: white;
+        box-shadow: 0 2px 6px rgb(33 26 29 / 0.08);
+        transition: border-color 200ms, box-shadow 200ms, transform 200ms;
+    }
+
+    .md3-card:hover {
+        border-color: var(--color-md3-primary);
+        box-shadow: 0 8px 18px rgb(103 80 164 / 0.14);
+        transform: translateY(-2px);
+    }
+
+    .md3-pill {
+        border: 1px solid rgb(0 104 116 / 0.25);
+        border-radius: 999px;
+        background: var(--color-md3-secondary-container);
+        color: #00363d;
+    }
+
+    .md3-eyebrow {
+        color: var(--color-md3-secondary);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .md3-display {
+        color: var(--color-md3-on-surface);
+        font-weight: 700;
+        letter-spacing: -0.045em;
+    }
+
+    .prose :where(a) {
+        color: var(--color-md3-primary);
     }
 }
 

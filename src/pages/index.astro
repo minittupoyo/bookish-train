@@ -9,12 +9,18 @@ const posts = await getPosts();
 ---
 
 <Layout>
-    <div class="mx-auto max-w-5xl px-6 py-14 sm:py-20">
-        <section>
-            <h1 class="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
-                {SITE_TITLE}
-            </h1>
-            <p class="mt-4 leading-relaxed text-zinc-600">{SITE_DESCRIPTION}</p>
+    <div class="mx-auto max-w-5xl px-6 py-10 sm:py-16">
+        <section class="md3-hero px-6 py-10 sm:px-12 sm:py-14">
+            <div class="relative z-10 max-w-2xl">
+                <p class="md3-eyebrow">Personal notes / 2026</p>
+                <h1 class="md3-display mt-4 text-4xl leading-[1.08] sm:text-6xl">
+                    {SITE_TITLE}
+                </h1>
+                <p class="mt-5 max-w-xl text-base leading-8 text-[#51474a] sm:text-lg">{SITE_DESCRIPTION}</p>
+                <a href="/posts/" class="mt-7 inline-flex cursor-pointer items-center rounded-full bg-[#6750a4] px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#4f378b]">
+                    記事を読む <span aria-hidden="true" class="ml-2">&rarr;</span>
+                </a>
+            </div>
         </section>
 
         <ListenBrainzRecent username="minittupoyo" count={5} />
@@ -23,22 +29,22 @@ const posts = await getPosts();
             posts.length === 0 ? (
                 <p class="mt-14 border-t border-zinc-200 pt-16 text-center text-zinc-500">まだ記事がありません。</p>
             ) : (
-                <ul class="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <ul class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     {posts.map((post) => (
                         <li class="h-full">
                             <a
                                 href={`/blog/${post.id}/`}
-                                class="group flex h-full cursor-pointer flex-col rounded-2xl border border-zinc-200/70 bg-white p-6 shadow-xs transition-[border-color,box-shadow] duration-200 hover:border-zinc-300 hover:shadow-md"
+                                class="md3-card group flex h-full cursor-pointer flex-col p-6"
                             >
-                                <FormattedDate date={post.data.date} format="numeric" class="text-xs font-medium tracking-wide text-zinc-500 tabular-nums" />
-                                <h2 class="mt-2 text-lg leading-snug font-semibold tracking-tight text-zinc-900 transition-colors duration-200 group-hover:text-blue-600">
+                                <FormattedDate date={post.data.date} format="numeric" class="text-xs font-semibold tracking-wide text-[#8b7b80] tabular-nums" />
+                                <h2 class="mt-2 text-lg leading-snug font-semibold tracking-tight text-[#211a1d] transition-colors duration-200 group-hover:text-[#6750a4]">
                                     {post.data.title}
                                 </h2>
-                                <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-600">{post.data.description}</p>
+                                <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-[#51474a]">{post.data.description}</p>
                                 {post.data.tags.length > 0 && (
                                     <ul class="mt-auto flex flex-wrap gap-2 pt-4" aria-label="タグ">
                                         {post.data.tags.map((tag) => (
-                                            <li class="rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs text-zinc-600">
+                                            <li class="md3-pill px-2.5 py-0.5 text-xs">
                                                 {tag}
                                             </li>
                                         ))}

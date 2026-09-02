@@ -8,20 +8,20 @@ const { username, count = 5 } = Astro.props;
 const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)}/`;
 ---
 
-<section class="mt-14 border-t border-zinc-200 pt-10" data-listenbrainz data-username={username} data-count={count}>
+<section class="mt-14 border-t border-[#e8dfe1] pt-10" data-listenbrainz data-username={username} data-count={count}>
     <div class="flex items-end justify-between gap-4">
         <div>
-            <p class="text-xs font-medium tracking-wide text-zinc-500">ListenBrainz</p>
-            <h2 class="mt-1 text-xl font-semibold tracking-tight text-zinc-900">最近聴いた曲</h2>
+            <p class="md3-eyebrow">ListenBrainz</p>
+            <h2 class="mt-1 text-xl font-semibold tracking-tight text-[#211a1d]">最近聴いた曲</h2>
         </div>
-        <a href={profileUrl} target="_blank" rel="noreferrer" class="text-sm text-zinc-500 underline decoration-zinc-300 underline-offset-4 transition-colors hover:text-blue-600">プロフィールを見る</a>
+        <a href={profileUrl} target="_blank" rel="noreferrer" class="text-sm text-[#817477] underline decoration-[#cbbdc0] underline-offset-4 transition-colors hover:text-[#6750a4]">プロフィールを見る</a>
     </div>
 
-    <div class="mt-5 hidden rounded-2xl border border-blue-200 bg-blue-50/60 p-4" data-listenbrainz-now-playing aria-live="polite">
-        <div class="mb-3 flex items-center gap-2 text-xs font-medium text-blue-700">
+    <div class="mt-5 hidden rounded-2xl border border-[#8bd9e5] bg-[#e2f7fa] p-4" data-listenbrainz-now-playing aria-live="polite">
+        <div class="mb-3 flex items-center gap-2 text-xs font-medium text-[#006874]">
             <span class="relative flex size-2" aria-hidden="true">
-                <span class="absolute inline-flex size-full animate-ping rounded-full bg-blue-500 opacity-60"></span>
-                <span class="relative inline-flex size-2 rounded-full bg-blue-600"></span>
+                <span class="absolute inline-flex size-full animate-ping rounded-full bg-[#00a6b8] opacity-60"></span>
+                <span class="relative inline-flex size-2 rounded-full bg-[#006874]"></span>
             </span>
             Now Playing
         </div>
@@ -29,7 +29,7 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
     </div>
 
     <p class="mt-5 text-sm text-zinc-500" data-listenbrainz-status aria-live="polite">ListenBrainz から取得中...</p>
-    <ol class="mt-5 hidden divide-y divide-zinc-100 overflow-hidden rounded-2xl border border-zinc-200/70 bg-white" data-listenbrainz-list aria-label="最近聴いた曲"></ol>
+    <ol class="mt-5 hidden divide-y divide-[#e8dfe1] overflow-hidden rounded-2xl border border-[#e8dfe1] bg-white" data-listenbrainz-list aria-label="最近聴いた曲"></ol>
 </section>
 
 <script>
@@ -69,7 +69,7 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
 
     const createCover = (metadata: ListenBrainzTrackMetadata, sizeClass: string, extraUrls: string[] = []) => {
         const cover = document.createElement("div");
-        cover.className = `flex ${sizeClass} shrink-0 items-center justify-center overflow-hidden rounded-lg bg-zinc-100 text-zinc-400`;
+        cover.className = `flex ${sizeClass} shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f9e9e8] text-[#817477]`;
         const coverUrls = [...new Set([...getCoverArtUrls(metadata), ...extraUrls])];
         if (coverUrls.length > 0) {
             const image = document.createElement("img");
@@ -115,14 +115,14 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         return request;
     };
 
-    const createTrackText = (metadata: ListenBrainzTrackMetadata, titleClass = "truncate text-sm font-medium text-zinc-900") => {
+    const createTrackText = (metadata: ListenBrainzTrackMetadata, titleClass = "truncate text-sm font-medium text-[#211a1d]") => {
         const track = document.createElement("div");
         track.className = "min-w-0 flex-1";
         const title = document.createElement("p");
         title.className = titleClass;
         title.textContent = metadata.track_name || "曲名不明";
         const details = document.createElement("p");
-        details.className = "mt-1 truncate text-xs text-zinc-500";
+        details.className = "mt-1 truncate text-xs text-[#817477]";
         details.textContent = [metadata.artist_name, metadata.release_name].filter(Boolean).join(" · ") || "アーティスト不明";
         track.append(title, details);
         return track;
@@ -133,7 +133,7 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
         const item = document.createElement("li");
         item.className = "flex items-center gap-4 px-4 py-4 sm:px-5";
         const listenedAt = document.createElement("time");
-        listenedAt.className = "shrink-0 text-xs text-zinc-400 tabular-nums";
+        listenedAt.className = "shrink-0 text-xs text-[#9b8d91] tabular-nums";
         listenedAt.textContent = formatListenedAt(listen.listened_at);
         if (listen.listened_at) listenedAt.dateTime = new Date(listen.listened_at * 1000).toISOString();
         item.append(createCover(metadata, "size-14"), createTrackText(metadata), listenedAt);
@@ -214,7 +214,7 @@ const profileUrl = `https://listenbrainz.org/user/${encodeURIComponent(username)
                 const resolvedCover = await resolveCoverArt(metadata);
                 trackContainer.replaceChildren(
                     createCover(metadata, "size-16 sm:size-20", resolvedCover ? [resolvedCover] : []),
-                    createTrackText(metadata, "truncate text-base font-semibold text-zinc-950 sm:text-lg"),
+                    createTrackText(metadata, "truncate text-base font-semibold text-[#211a1d] sm:text-lg"),
                 );
                 nowPlaying.classList.remove("hidden");
 

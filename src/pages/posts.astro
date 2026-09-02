@@ -18,8 +18,9 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 <Layout title="記事一覧">
     <div class="mx-auto max-w-3xl px-6 py-14 sm:py-20">
         <header>
-            <h1 class="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">記事一覧</h1>
-            <p class="mt-3 text-sm text-zinc-500 tabular-nums">{posts.length} 件の記事</p>
+            <p class="md3-eyebrow">Archive</p>
+            <h1 class="md3-display mt-3 text-4xl sm:text-5xl">記事一覧</h1>
+            <p class="mt-3 text-sm text-[#817477] tabular-nums">{posts.length} 件の記事</p>
         </header>
 
         {
@@ -28,21 +29,21 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
             ) : (
                 years.map((year) => (
                     <section class="mt-12 first:mt-14">
-                        <h2 class="text-sm font-semibold tracking-wide text-zinc-500 tabular-nums">{year} 年</h2>
-                        <ol class="mt-4 border-t border-zinc-200">
+                        <h2 class="text-sm font-bold tracking-wide text-[#6750a4] tabular-nums">{year} 年</h2>
+                        <ol class="mt-4 overflow-hidden rounded-2xl border border-[#e8dfe1] bg-white">
                             {(byYear.get(year) ?? []).map((post) => (
-                                <li class="border-b border-zinc-200">
-                                    <a href={`/blog/${post.id}/`} class="group flex cursor-pointer items-baseline gap-x-6 py-4">
+                                <li class="border-b border-[#e8dfe1] last:border-b-0">
+                                    <a href={`/blog/${post.id}/`} class="group flex cursor-pointer items-baseline gap-x-6 px-5 py-5 transition-colors duration-200 hover:bg-[#f9e9e8]">
                                         <FormattedDate
                                             date={post.data.date}
                                             format="numeric"
-                                            class="w-28 shrink-0 text-xs font-medium whitespace-nowrap text-zinc-500 tabular-nums"
+                                            class="w-28 shrink-0 text-xs font-medium whitespace-nowrap text-[#817477] tabular-nums"
                                         />
                                         <span class="min-w-0">
-                                            <span class="line-clamp-2 block font-medium text-zinc-900 transition-colors duration-200 group-hover:text-blue-600">
+                                            <span class="line-clamp-2 block font-medium text-[#211a1d] transition-colors duration-200 group-hover:text-[#6750a4]">
                                                 {post.data.title}
                                             </span>
-                                            <span class="mt-1 line-clamp-1 block text-sm leading-relaxed text-zinc-600">
+                                            <span class="mt-1 line-clamp-1 block text-sm leading-relaxed text-[#51474a]">
                                                 {post.data.description}
                                             </span>
                                         </span>
